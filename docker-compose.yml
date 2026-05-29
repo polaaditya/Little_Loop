@@ -1,0 +1,69 @@
+# ─── LittleLoop — local development with Docker ───────────────────────────
+#
+# Two modes:
+#
+#   Mode A — SQLite (zero config, fastest start):
+#     docker compose up app
+#
+#   Mode B — PostgreSQL (mirrors production):
+#     docker compose --profile postgres up
+#
+# Open http://localhost:3000 in your browser.
+# ──────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # ── App (SQLite mode — default) ─────────────────────────────────────────
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      # Leave DATABASE_URL blank → SQLite is used
+    volumes:
+      # Persist SQLite database between restarts
+      - sqlite_data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ── App (PostgreSQL mode) ───────────────────────────────────────────────
+  app-pg:
+    build: .
+    profiles: ["postgres"]
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgresql://littleloop:littleloop@postgres:5432/littleloop
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── PostgreSQL ──────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_USER: littleloop
+      POSTGRES_PASSWORD: littleloop
+      POSTGRES_DB: littleloop
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U littleloop -d littleloop"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  sqlite_data:
+  pg_data:

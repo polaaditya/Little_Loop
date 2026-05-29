@@ -4,39 +4,78 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LittleLoop | Small moments. Stronger families.</title>
-    <meta
-      name="description"
-      content="LittleLoop is a gentle daily connection app for parents, kids, teens, infants, and siblings."
-    />
-    <link rel="stylesheet" href="styles.css?v=2" />
+    <meta name="description" content="LittleLoop helps busy parents stay genuinely connected with their kids — one gentle daily prompt, one captured memory at a time." />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='%23faf8f3'/><circle cx='20' cy='20' r='13' fill='none' stroke='%23d6e2df' stroke-width='1.5'/><circle cx='20' cy='7' r='5' fill='%2358765f'/><circle cx='33' cy='20' r='4' fill='%23d98c7a'/><circle cx='26' cy='31' r='3.2' fill='%23c8a050'/><circle cx='14' cy='31' r='2.8' fill='%237899a1'/></svg>" />
+    <link rel="stylesheet" href="styles.css?v=5" />
   </head>
   <body>
+
+    <!-- ═══ HEADER ════════════════════════════════════════════════════════ -->
     <header class="site-header">
       <a class="brand" href="#top" aria-label="LittleLoop home">
-        <span class="brand-mark" aria-hidden="true">L</span>
-        <span>LittleLoop</span>
+        <svg class="brand-logo" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="22" cy="22" r="14" stroke="#c5d4c3" stroke-width="1.5"/>
+          <circle cx="22" cy="8"  r="5.5" fill="#58765f"/>
+          <circle cx="36" cy="22" r="4.5" fill="#d98c7a"/>
+          <circle cx="29" cy="33" r="3.8" fill="#c8a050"/>
+          <circle cx="15" cy="33" r="3.2" fill="#7899a1"/>
+          <circle cx="8"  cy="22" r="2.6" fill="#8ba888"/>
+        </svg>
+        <span class="brand-name">LittleLoop</span>
       </a>
+
       <nav class="nav" aria-label="Primary navigation">
         <a href="#features">Features</a>
+        <a href="#demo-video">Demo</a>
         <a href="#dashboard">Dashboard</a>
-        <a href="#data">Sample data</a>
+        <a href="#for-parents">Who it's for</a>
       </nav>
-      <a class="header-cta" href="#dashboard">Preview</a>
+
+      <!-- Auth controls — toggled by JS -->
+      <div class="header-auth" id="headerAuth">
+        <button class="header-cta" id="openAuthBtn" type="button">Sign in</button>
+      </div>
     </header>
 
     <main id="top">
+
+      <!-- ═══ HERO ══════════════════════════════════════════════════════ -->
       <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-ring-bg" aria-hidden="true">
+          <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="300" cy="300" r="240" stroke="#e8f0e7" stroke-width="2" fill="none"/>
+            <circle cx="300" cy="300" r="180" stroke="#f2e8e4" stroke-width="1.5" fill="none"/>
+            <circle cx="300" cy="60"  r="28" fill="#c5d4c3" opacity=".6"/>
+            <circle cx="540" cy="300" r="22" fill="#e8bfb5" opacity=".5"/>
+            <circle cx="420" cy="490" r="18" fill="#d6c9a5" opacity=".5"/>
+            <circle cx="180" cy="490" r="16" fill="#b8cdd0" opacity=".5"/>
+            <circle cx="60"  cy="300" r="13" fill="#a8c4a5" opacity=".4"/>
+          </svg>
+        </div>
+
         <div class="hero-copy">
-          <p class="eyebrow">For working parents, stay-at-home parents, caregivers, and siblings</p>
+          <p class="eyebrow">For working parents &amp; stay-at-home parents</p>
+          <div class="hero-logo-display" aria-hidden="true">
+            <svg viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="44" cy="44" r="28" stroke="#c5d4c3" stroke-width="2.5"/>
+              <circle cx="44" cy="16" r="11" fill="#58765f"/>
+              <circle cx="72" cy="44" r="9"  fill="#d98c7a"/>
+              <circle cx="58" cy="66" r="7.5" fill="#c8a050"/>
+              <circle cx="30" cy="66" r="6.5" fill="#7899a1"/>
+              <circle cx="16" cy="44" r="5.5" fill="#8ba888"/>
+            </svg>
+          </div>
           <h1 id="hero-title">LittleLoop</h1>
-          <p class="tagline">Small moments. Stronger families.</p>
+          <p class="tagline">Small moments.<br>Stronger families.</p>
           <p class="hero-text">
-            A gentle daily connection app for parents, kids, teens, infants, and siblings.
-            Build closeness through tiny prompts, care steps, streaks, and shared memories.
+            Whether you're rushing between meetings or home all day, connection
+            with your kids can slip through the cracks. LittleLoop sends one gentle
+            prompt a day — and lets you <strong>capture the answer as a photo or memory</strong>,
+            saved forever in your family's private jar.
           </p>
-          <div class="hero-actions" aria-label="Primary actions">
-            <a class="button primary" href="#dashboard">Start a family loop</a>
-            <a class="button secondary" href="#data">Preview the dashboard</a>
+          <div class="hero-actions">
+            <button class="button primary" id="heroSignUpBtn" type="button">Start your family loop</button>
+            <a class="button secondary" href="#demo-video">Watch the 2-min demo</a>
           </div>
         </div>
 
@@ -48,8 +87,7 @@
             </div>
             <div class="progress-card">
               <div class="care-ring" aria-label="12 out of 15 care steps this week">
-                <span>12</span>
-                <small>/15</small>
+                <span>12</span><small>/15</small>
               </div>
               <div>
                 <p class="metric-label">Care Steps this week</p>
@@ -60,79 +98,132 @@
             <div class="prompt-card">
               <span class="chip">Big Kid</span>
               <h3>What made you smile today?</h3>
-              <p>Aarav answered: "The art table at school."</p>
+              <p id="heroAnswer">Aarav: "The art table at school."</p>
+              <button class="capture-pill" type="button">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                Capture moment
+              </button>
             </div>
-            <div class="mini-grid" aria-label="Family loop previews">
-              <div>
-                <span>Sibling Loop</span>
-                <strong>Kindness note sent</strong>
-              </div>
-              <div>
-                <span>Memory Jar</span>
-                <strong>28 saved moments</strong>
-              </div>
+            <div class="mini-grid">
+              <div><span>Sibling Loop</span><strong>Kindness note sent</strong></div>
+              <div><span>Memory Jar</span><strong id="heroMemoryCount">— saved moments</strong></div>
             </div>
           </div>
         </aside>
       </section>
 
+      <!-- ═══ TRUST STRIP ════════════════════════════════════════════════ -->
       <section class="trust-strip" aria-label="Product principles">
         <span>No public child sharing by default</span>
         <span>Age-aware prompts</span>
         <span>Progress without pressure</span>
       </section>
 
-      <section class="section" id="features" aria-labelledby="features-title">
+      <!-- ═══ WHO IT'S FOR ══════════════════════════════════════════════ -->
+      <section class="section" id="for-parents" aria-labelledby="for-parents-title">
         <div class="section-heading">
-          <p class="eyebrow">A family-wide connection layer</p>
-          <h2 id="features-title">Built for every stage of family life</h2>
-          <p>
-            LittleLoop adapts from infant memory keeping to teen check-ins and sibling kindness,
-            so the habit grows with the family instead of aging out.
-          </p>
+          <p class="eyebrow">Who LittleLoop is for</p>
+          <h2 id="for-parents-title">Built around how real families live</h2>
+          <p>No two families are the same. LittleLoop adapts to your schedule — not the other way around.</p>
         </div>
-
-        <div class="feature-grid">
-          <article class="feature-card">
-            <span class="feature-icon">0-2</span>
-            <h3>Infant moments</h3>
-            <p>Capture a sound, smile, feeding note, sleep win, or photo memory in seconds.</p>
+        <div class="persona-grid">
+          <article class="persona-card">
+            <div class="persona-dot" style="background:#58765f"></div>
+            <h3>Working parents</h3>
+            <p>Between back-to-back calls and late pickups, connection slips. One 60-second loop keeps you in your child's day even when you weren't physically there.</p>
           </article>
-          <article class="feature-card">
-            <span class="feature-icon">3-7</span>
-            <h3>Little kid loops</h3>
-            <p>Use playful prompts, drawings, emoji moods, and bedtime questions.</p>
+          <article class="persona-card">
+            <div class="persona-dot" style="background:#d98c7a"></div>
+            <h3>Stay-at-home parents</h3>
+            <p>You're present all day, but "how was school" still gets a shrug. LittleLoop gives kids a low-pressure way to share on their own terms.</p>
           </article>
-          <article class="feature-card">
-            <span class="feature-icon">8-12</span>
-            <h3>Big kid reflection</h3>
-            <p>Invite the best part, the hard part, and the moments worth remembering.</p>
-          </article>
-          <article class="feature-card">
-            <span class="feature-icon">13+</span>
-            <h3>Teen check-ins</h3>
-            <p>Keep it low-pressure with space, listening, advice, playlists, and plans.</p>
-          </article>
-          <article class="feature-card">
-            <span class="feature-icon">Sib</span>
-            <h3>Sibling loops</h3>
-            <p>Help brothers and sisters trade kindness notes, mini challenges, and thank-yous.</p>
-          </article>
-          <article class="feature-card">
-            <span class="feature-icon">All</span>
-            <h3>Family circle</h3>
-            <p>Bring parents, caregivers, grandparents, and siblings into one calm space.</p>
+          <article class="persona-card">
+            <div class="persona-dot" style="background:#7899a1"></div>
+            <h3>Distributed &amp; blended families</h3>
+            <p>Parents in different cities, grandparents across time zones. One shared loop keeps everyone in the circle.</p>
           </article>
         </div>
       </section>
 
+      <!-- ═══ FEATURES ══════════════════════════════════════════════════ -->
+      <section class="section" id="features" aria-labelledby="features-title">
+        <div class="section-heading">
+          <p class="eyebrow">A family-wide connection layer</p>
+          <h2 id="features-title">Built for every stage of family life</h2>
+          <p>LittleLoop adapts from infant memory keeping to teen check-ins, so the habit grows with your family.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card"><span class="feature-icon" style="background:#58765f">0–2</span><h3>Infant moments</h3><p>Capture a sound, smile, feeding note, sleep win, or photo in seconds.</p></article>
+          <article class="feature-card"><span class="feature-icon" style="background:#7899a1">3–7</span><h3>Little kid loops</h3><p>Playful prompts, drawings, emoji moods, and bedtime questions.</p></article>
+          <article class="feature-card"><span class="feature-icon" style="background:#8ba888">8–12</span><h3>Big kid reflection</h3><p>Invite the best part, the hard part, and the moments worth keeping.</p></article>
+          <article class="feature-card"><span class="feature-icon" style="background:#c8a050">13+</span><h3>Teen check-ins</h3><p>Low-pressure with space, listening, advice, playlists, and plans.</p></article>
+          <article class="feature-card"><span class="feature-icon" style="background:#d98c7a">Sib</span><h3>Sibling loops</h3><p>Brothers and sisters trade kindness notes, mini challenges, and thank-yous.</p></article>
+          <article class="feature-card capture-feature-card">
+            <span class="feature-icon" style="background:#2e2e2a">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </span>
+            <h3>Memory capture</h3>
+            <p>Snap a photo or write a note right inside the loop. Saved to your family's private Memory Jar automatically.</p>
+            <span class="feature-new">New</span>
+          </article>
+        </div>
+      </section>
+
+      <!-- ═══ DEMO VIDEO ════════════════════════════════════════════════ -->
+      <section class="video-section" id="demo-video" aria-labelledby="video-title">
+        <div class="video-section-inner">
+          <div class="video-copy">
+            <p class="eyebrow">See it in action</p>
+            <h2 id="video-title">Watch LittleLoop in&nbsp;2&nbsp;minutes</h2>
+            <p>See how one daily prompt changes everything about family connection — from the first loop to a jar full of memories.</p>
+
+            <!-- Admin: set video URL (visible only when logged in as admin) -->
+            <div class="video-admin" id="videoAdmin" hidden>
+              <p class="muted">Set demo video</p>
+              <div class="video-admin-row">
+                <input class="video-url-input" id="videoUrlInput" type="url"
+                  placeholder="Paste YouTube / Vimeo URL…" />
+                <button class="button primary small-btn" id="saveVideoUrlBtn" type="button">Save URL</button>
+              </div>
+              <label class="upload-video-label" for="videoFileUpload">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+                Upload a video file (MP4, max 200 MB)
+                <input type="file" id="videoFileUpload" accept="video/*" style="display:none" />
+              </label>
+            </div>
+          </div>
+
+          <!-- Video player -->
+          <div class="video-player-wrap" id="videoPlayerWrap">
+            <!-- Filled by JS: YouTube iframe OR HTML5 video OR placeholder -->
+            <div class="video-placeholder" id="videoPlaceholder">
+              <div class="video-placeholder-inner">
+                <svg class="video-play-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="44" cy="44" r="44" fill="#58765f" opacity=".12"/>
+                  <circle cx="44" cy="44" r="32" fill="#58765f" opacity=".18"/>
+                  <polygon points="36,28 64,44 36,60" fill="#58765f"/>
+                </svg>
+                <p class="video-placeholder-label">Demo video coming soon</p>
+                <p class="video-placeholder-hint">Sign in to upload a demo video for your visitors.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ DASHBOARD ═════════════════════════════════════════════════ -->
       <section class="dashboard-section" id="dashboard" aria-labelledby="dashboard-title">
         <div class="section-heading compact">
-          <p class="eyebrow">Frontend demo</p>
+          <p class="eyebrow">Live dashboard</p>
           <h2 id="dashboard-title">Today inside LittleLoop</h2>
-          <p>
-            The dashboard turns sample family data into a friendly, one-handed view for busy days.
-          </p>
+          <p>Care steps, streaks, today's prompt, and your Memory Jar — all in one view.</p>
+        </div>
+
+        <!-- Guest banner (shown when not signed in) -->
+        <div class="guest-banner" id="guestBanner" hidden>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Viewing demo data &mdash;
+          <button class="guest-banner-link" id="guestSignInBtn" type="button">Sign in to see your family's loop</button>
         </div>
 
         <div class="dashboard-layout">
@@ -140,100 +231,217 @@
             <div class="dashboard-header">
               <div>
                 <p class="muted">Good evening</p>
-                <h3>Maya's Family Loop</h3>
+                <h3 id="dashFamilyName">Loading…</h3>
               </div>
-              <div class="avatar-row" aria-label="Family circle">
-                <span>M</span>
-                <span>A</span>
-                <span>D</span>
-                <span>G</span>
+              <div class="avatar-row" id="dashAvatars">
+                <span>M</span><span>A</span><span>N</span><span>Z</span>
               </div>
             </div>
 
             <div class="metrics-row">
-              <div class="metric-card">
-                <span class="metric-number">12</span>
-                <span>Care Steps this week</span>
-              </div>
-              <div class="metric-card">
-                <span class="metric-number">5</span>
-                <span>Days of small moments</span>
-              </div>
-              <div class="metric-card">
-                <span class="metric-number">4</span>
-                <span>Sibling kindness loops</span>
-              </div>
+              <div class="metric-card"><span class="metric-number" id="metricCareSteps">—</span><span>Care Steps this week</span></div>
+              <div class="metric-card"><span class="metric-number" id="metricStreak">—</span><span>Days of small moments</span></div>
+              <div class="metric-card"><span class="metric-number" id="metricMemories">—</span><span>Saved memories</span></div>
             </div>
 
-            <article class="today-loop">
+            <article class="today-loop" id="todayLoopCard">
               <div>
                 <span class="chip">Today's Loop</span>
-                <h3 id="activePrompt">What made you smile today?</h3>
-                <p id="activeAnswer">Aarav answered: "The art table at school."</p>
+                <h3 id="activePrompt">Loading…</h3>
+                <p id="activeAnswer" class="muted"></p>
               </div>
-              <button class="soft-button" type="button">Send loop back</button>
+              <button class="capture-btn" type="button" id="openCaptureModal">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                Capture this moment
+              </button>
             </article>
 
-            <div class="loop-grid" id="loopCards" aria-label="Age based loop cards"></div>
+            <div class="loop-grid" id="loopCards" aria-label="Age-based loop cards"></div>
           </section>
 
           <aside class="memory-panel" aria-label="Memory jar and privacy">
             <div class="panel-block">
               <p class="muted">Memory Jar</p>
-              <h3>28 saved moments</h3>
-              <ul class="memory-list">
-                <li>First sleepy laugh from Milo</li>
-                <li>Nora's playlist for Friday dinner</li>
-                <li>Zoe thanked Leo for helping with homework</li>
-              </ul>
+              <h3 id="memoryCount">— saved moments</h3>
+              <ul class="memory-list" id="memoryList"><li class="memory-item">Loading…</li></ul>
             </div>
             <div class="panel-block">
               <p class="muted">Privacy</p>
               <h3>Family-only by default</h3>
-              <p>
-                Child content stays inside the family's circle unless a parent chooses otherwise.
-              </p>
+              <p>Child content stays inside your family's circle unless you choose otherwise.</p>
             </div>
           </aside>
-        </div>
-      </section>
-
-      <section class="section" id="data" aria-labelledby="data-title">
-        <div class="section-heading">
-          <p class="eyebrow">Sample user database</p>
-          <h2 id="data-title">How the data looks before it becomes the dashboard</h2>
-          <p>
-            This demo data powers the cards below and shows the age stage, relationship type,
-            care steps, streak, and most recent loop.
-          </p>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>User ID</th>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Connected to</th>
-                <th>Age stage</th>
-                <th>Loop type</th>
-                <th>Care steps</th>
-                <th>Streak</th>
-                <th>Last loop</th>
-              </tr>
-            </thead>
-            <tbody id="userTable"></tbody>
-          </table>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <strong>LittleLoop</strong>
+      <div class="footer-brand">
+        <svg class="footer-logo" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="22" cy="22" r="14" stroke="#c5d4c3" stroke-width="1.5"/>
+          <circle cx="22" cy="8"  r="5.5" fill="#58765f" opacity=".7"/>
+          <circle cx="36" cy="22" r="4.5" fill="#d98c7a" opacity=".7"/>
+          <circle cx="29" cy="33" r="3.8" fill="#c8a050" opacity=".7"/>
+          <circle cx="15" cy="33" r="3.2" fill="#7899a1" opacity=".7"/>
+          <circle cx="8"  cy="22" r="2.6" fill="#8ba888" opacity=".7"/>
+        </svg>
+        <strong>LittleLoop</strong>
+      </div>
       <span>Small moments. Stronger families.</span>
     </footer>
 
-    <script src="app.js?v=2"></script>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         AUTH MODAL  (login / register)
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div class="modal-backdrop" id="authModal" hidden aria-hidden="true">
+      <div class="modal-card auth-card" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+
+        <button class="modal-close" id="authModalClose" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+
+        <!-- Logo in modal -->
+        <div class="auth-logo">
+          <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="28" cy="28" r="18" stroke="#c5d4c3" stroke-width="2"/>
+            <circle cx="28" cy="10" r="7"  fill="#58765f"/>
+            <circle cx="46" cy="28" r="5.5" fill="#d98c7a"/>
+            <circle cx="37" cy="42" r="4.8" fill="#c8a050"/>
+            <circle cx="19" cy="42" r="4"   fill="#7899a1"/>
+            <circle cx="10" cy="28" r="3.5" fill="#8ba888"/>
+          </svg>
+        </div>
+
+        <!-- Tabs -->
+        <div class="auth-tabs" role="tablist">
+          <button class="auth-tab active" id="tabLogin"    role="tab" aria-selected="true"  type="button">Sign in</button>
+          <button class="auth-tab"        id="tabRegister" role="tab" aria-selected="false" type="button">Create account</button>
+        </div>
+
+        <!-- Error message -->
+        <div class="auth-error" id="authError" hidden role="alert"></div>
+
+        <!-- ── LOGIN FORM ── -->
+        <form class="auth-form" id="loginForm" novalidate>
+          <h2 id="authModalTitle" class="auth-heading">Welcome back</h2>
+          <p class="auth-subheading">Sign in to your family loop.</p>
+
+          <label class="form-label" for="loginEmail">Email</label>
+          <input class="form-input" id="loginEmail" type="email" autocomplete="email"
+            placeholder="you@example.com" required />
+
+          <label class="form-label" for="loginPassword">Password</label>
+          <div class="input-password-wrap">
+            <input class="form-input" id="loginPassword" type="password" autocomplete="current-password"
+              placeholder="Your password" required />
+            <button class="show-pass-btn" type="button" aria-label="Toggle password visibility" data-target="loginPassword">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+
+          <button class="button primary full-width auth-submit" id="loginSubmitBtn" type="submit">
+            Sign in to LittleLoop
+          </button>
+
+          <p class="auth-switch">Don't have an account?
+            <button class="link-btn" id="switchToRegister" type="button">Create one free →</button>
+          </p>
+        </form>
+
+        <!-- ── REGISTER FORM ── -->
+        <form class="auth-form" id="registerForm" novalidate hidden>
+          <h2 class="auth-heading">Create your family loop</h2>
+          <p class="auth-subheading">Free forever. No credit card needed.</p>
+
+          <label class="form-label" for="registerName">Your name</label>
+          <input class="form-input" id="registerName" type="text" autocomplete="name"
+            placeholder="Maya" required />
+
+          <label class="form-label" for="registerEmail">Email</label>
+          <input class="form-input" id="registerEmail" type="email" autocomplete="email"
+            placeholder="you@example.com" required />
+
+          <label class="form-label" for="registerPassword">Password</label>
+          <div class="input-password-wrap">
+            <input class="form-input" id="registerPassword" type="password" autocomplete="new-password"
+              placeholder="At least 6 characters" required minlength="6" />
+            <button class="show-pass-btn" type="button" aria-label="Toggle password visibility" data-target="registerPassword">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+
+          <button class="button primary full-width auth-submit" id="registerSubmitBtn" type="submit">
+            Start my family loop
+          </button>
+
+          <p class="auth-switch">Already have an account?
+            <button class="link-btn" id="switchToLogin" type="button">Sign in →</button>
+          </p>
+        </form>
+
+        <!-- Submitting overlay -->
+        <div class="modal-saving" id="authSaving" hidden>
+          <div class="saving-spinner"></div>
+          <p>Setting up your loop…</p>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         MEMORY CAPTURE MODAL
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div class="modal-backdrop" id="captureModal" hidden aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-prompt-title">
+        <button class="modal-close" id="modalClose" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+
+        <div class="modal-header">
+          <span class="chip">Today's Loop</span>
+          <h3 id="modal-prompt-title" class="modal-prompt-text">What made you smile today?</h3>
+        </div>
+
+        <div class="modal-body">
+          <label class="modal-label" for="captureText">Your answer</label>
+          <textarea id="captureText" class="capture-textarea"
+            placeholder="Share what happened — anything, big or small…"
+            rows="3" maxlength="500"></textarea>
+          <div class="char-count"><span id="charCount">0</span>/500</div>
+
+          <div class="image-zone" id="imageZone" role="button" tabindex="0" aria-label="Add a photo">
+            <input type="file" accept="image/*" id="imageFileInput" style="display:none" />
+            <div class="upload-prompt" id="uploadPrompt">
+              <div class="camera-circle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </div>
+              <p class="upload-label">Add a photo</p>
+              <p class="upload-hint">Camera or gallery &mdash; optional</p>
+            </div>
+            <div class="image-preview-wrap" id="imagePreviewWrap" hidden>
+              <img id="imagePreview" alt="Memory photo" />
+              <button class="remove-image-btn" id="removeImageBtn" type="button">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="button primary full-width" id="saveMemoryBtn" type="button">Save this moment</button>
+          <button class="modal-cancel-btn" id="modalCancelBtn" type="button">Cancel</button>
+        </div>
+
+        <div class="modal-saving" id="modalSaving" hidden>
+          <div class="saving-spinner"></div>
+          <p>Saving to your Memory Jar…</p>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js?v=5"></script>
   </body>
 </html>

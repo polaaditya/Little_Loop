@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Local database
+data/
+
+# Uploaded files (serve from cloud storage in production)
+uploads/
+
+# Environment secrets
+.env
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
