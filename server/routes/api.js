@@ -21,6 +21,68 @@ const router = require('express').Router();
 const db     = require('../db');
 const { optionalAuth, requireAuth } = require('../middleware/auth');
 
+/* ─── Daily prompt pool ───────────────────────────────────────────────── */
+const STAGE_PROMPTS = {
+  'Infant': [
+    'Capture a tiny smile or sound from today.',
+    'What new thing did baby notice today?',
+    'Write one milestone down, however small.',
+    'What was the sweetest moment with baby today?',
+    'What helped baby settle today?',
+    'Any new sounds, expressions, or movements today?',
+    'What made you smile while watching baby today?',
+  ],
+  'Little Kid': [
+    'What made you laugh today?',
+    'What was the best part of your day?',
+    'What did you learn today?',
+    'Who was your favourite person today and why?',
+    'What would you like to do this weekend?',
+    'If today was a colour, what would it be?',
+    'What\'s something silly that happened today?',
+  ],
+  'Big Kid': [
+    'What made you smile today?',
+    'What was the hard part of your day?',
+    'What are you proud of this week?',
+    'What\'s something you\'re looking forward to?',
+    'Tell us something kind you noticed a friend do.',
+    'What\'s the best thing you heard today?',
+    'If you could redo one moment today, what would it be?',
+  ],
+  'Teen': [
+    'Want advice, space, or just someone to listen?',
+    'What\'s on your mind this week?',
+    'What song are you into right now?',
+    'What\'s something you wish adults understood?',
+    'What\'s a goal you\'re working toward?',
+    'What was surprisingly good about today?',
+    'What\'s one thing you want to try this month?',
+  ],
+};
+
+const DEFAULT_PROMPTS = [
+  'What made you smile today?',
+  'What was the best part of your day?',
+  'What are you grateful for right now?',
+  'What\'s one thing you want to remember this week?',
+  'What made today feel different?',
+  'Share one small win from today.',
+  'What\'s something kind someone did for you today?',
+];
+
+function pickDailyPrompt(members) {
+  const dayIndex = Math.floor(Date.now() / 86400000); // days since Unix epoch
+  const stages   = (members || []).map(m => m.age_stage).filter(Boolean);
+
+  if (stages.length === 0) return DEFAULT_PROMPTS[dayIndex % DEFAULT_PROMPTS.length];
+
+  // Rotate through each member's stage across days
+  const stage = stages[dayIndex % stages.length];
+  const pool  = STAGE_PROMPTS[stage] || DEFAULT_PROMPTS;
+  return pool[dayIndex % pool.length];
+}
+
 /* ─── Utility ─────────────────────────────────────────────────────────── */
 const asyncHandler = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
@@ -74,16 +136,46 @@ router.get('/dashboard', optionalAuth, asyncHandler(async (req, res) => {
     else break;
   }
 
-  // Today's most recent loop + latest response
-  const loop = await db.get(
+  // Get family members (for age-stage-aware prompt)
+  const members = await db.all(
+    'SELECT age_stage FROM members WHERE family_id = ?',
+    [fid],
+  );
+
+  // Check for a loop created today
+  const todayDate = new Date().toISOString().split('T')[0];
+  let loop = await db.get(
     `SELECT l.id, l.prompt, r.content AS lastResponse
      FROM loops l
      LEFT JOIN responses r ON r.loop_id = l.id
-     WHERE l.family_id = ?
+     WHERE l.family_id = ? AND date(l.created_at) = ?
      ORDER BY l.created_at DESC, r.created_at DESC
      LIMIT 1`,
-    [fid],
+    [fid, todayDate],
   );
+
+  // Auto-create today's loop if none exists
+  if (!loop && !isGuest) {
+    const prompt = pickDailyPrompt(members);
+    const { id: loopId } = await db.run(
+      "INSERT INTO loops (family_id, loop_type, prompt) VALUES (?, 'Parent-child', ?)",
+      [fid, prompt],
+    );
+    loop = { id: loopId, prompt, lastResponse: null };
+  }
+
+  // Fallback: show most recent loop for guests (or if today creation failed)
+  if (!loop) {
+    loop = await db.get(
+      `SELECT l.id, l.prompt, r.content AS lastResponse
+       FROM loops l
+       LEFT JOIN responses r ON r.loop_id = l.id
+       WHERE l.family_id = ?
+       ORDER BY l.created_at DESC, r.created_at DESC
+       LIMIT 1`,
+      [fid],
+    );
+  }
 
   res.json({
     familyName:   family?.name ?? 'Your',
@@ -91,7 +183,7 @@ router.get('/dashboard', optionalAuth, asyncHandler(async (req, res) => {
     streakDays,
     isGuest,
     todayLoop: loop
-      ? { prompt: loop.prompt, lastResponse: loop.lastResponse }
+      ? { id: loop.id, prompt: loop.prompt, lastResponse: loop.lastResponse }
       : null,
   });
 }));

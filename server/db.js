@@ -62,9 +62,12 @@ async function init() {
 /* ─── Safe migrations (idempotent) ───────────────────────────────────── */
 async function _migrate() {
   if (_type === 'sqlite') {
-    try { _db.exec('ALTER TABLE memories ADD COLUMN image_data TEXT'); } catch { /* already exists */ }
+    try { _db.exec('ALTER TABLE memories ADD COLUMN image_data TEXT'); }         catch { }
+    try { _db.exec('ALTER TABLE families ADD COLUMN invite_token TEXT'); }        catch { }
+    try { _db.exec('ALTER TABLE members  ADD COLUMN role TEXT NOT NULL DEFAULT \'Member\''); } catch { }
   } else {
     await _db.query('ALTER TABLE memories ADD COLUMN IF NOT EXISTS image_data TEXT').catch(() => {});
+    await _db.query('ALTER TABLE families ADD COLUMN IF NOT EXISTS invite_token TEXT').catch(() => {});
   }
 }
 
@@ -73,9 +76,10 @@ async function _createTables() {
   if (_type === 'sqlite') {
     _db.exec(`
       CREATE TABLE IF NOT EXISTS families (
-        id         INTEGER PRIMARY KEY AUTOINCREMENT,
-        name       TEXT    NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        id           INTEGER PRIMARY KEY AUTOINCREMENT,
+        name         TEXT    NOT NULL,
+        invite_token TEXT,
+        created_at   DATETIME DEFAULT CURRENT_TIMESTAMP
       );
       CREATE TABLE IF NOT EXISTS members (
         id         INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -131,9 +135,10 @@ async function _createTables() {
   } else {
     await _db.query(`
       CREATE TABLE IF NOT EXISTS families (
-        id         SERIAL PRIMARY KEY,
-        name       TEXT      NOT NULL,
-        created_at TIMESTAMP DEFAULT NOW()
+        id           SERIAL PRIMARY KEY,
+        name         TEXT      NOT NULL,
+        invite_token TEXT,
+        created_at   TIMESTAMP DEFAULT NOW()
       );
       CREATE TABLE IF NOT EXISTS members (
         id         SERIAL PRIMARY KEY,
